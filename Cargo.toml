@@ -1,0 +1,6 @@
+[package]
+name = "toy-language"
+version = "0.0.1"
+authors = ["ging0044 <ging0044@algonquinlive.com>"]
+
+[dependencies]
