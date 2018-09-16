@@ -23,7 +23,7 @@ print_range = fn(a, b)             # `λ` is synonym to `lambda`
                   if a + 1 <= b then {
                     print(", ");
                     print_range(a + 1, b);
-                  } else true;#println("");        # newline
+                  } else println("");        # newline
                 };
 print_range(1, 5);
 "#.to_string();
