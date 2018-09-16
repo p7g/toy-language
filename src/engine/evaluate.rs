@@ -131,7 +131,10 @@ fn add(left: AST, right: AST, env: &Environment) -> AST {
     match (&left, &right) {
         (AST::Number(l), AST::Number(r)) => AST::Number(l + r),
         (AST::String_(l), AST::String_(r)) => AST::String_([l.as_ref(), r.as_ref()].join("")),
-        _ => panic!(format!("Cannot add operands: {:?} + {:?}", left, right))
+        _ => {
+            env.dump();
+            panic!(format!("Cannot add operands: {:?} + {:?}", left, right))
+        }
     }
 }
 
@@ -140,7 +143,10 @@ fn subtract(left: AST, right: AST, env: &Environment) -> AST {
     let right = lookup_or_self(&right, env);
     match (&left, &right) {
         (AST::Number(l), AST::Number(r)) => AST::Number(l - r),
-        _ => panic!(format!("Cannot subtract operands: {:?} - {:?}", left, right))
+        _ => {
+            env.dump();
+            panic!(format!("Cannot subtract operands: {:?} - {:?}", left, right))
+        }
     }
 }
 
@@ -150,7 +156,10 @@ fn multiply(left: AST, right: AST, env: &Environment) -> AST {
     match (&left, &right) {
         (AST::Number(l), AST::Number(r)) => AST::Number(l * r),
         (AST::String_(l), AST::Number(r)) => AST::String_(l.repeat(*r as usize)),
-        _ => panic!(format!("Cannot multiply operands: {:?} * {:?}", left, right))
+        _ => {
+            env.dump();
+            panic!(format!("Cannot multiply operands: {:?} * {:?}", left, right))
+        }
     }
 }
 
@@ -159,7 +168,10 @@ fn divide(left: AST, right: AST, env: &Environment) -> AST {
     let right = lookup_or_self(&right, env);
     match (&left, &right) {
         (AST::Number(l), AST::Number(r)) => AST::Number(l / r),
-        _ => panic!(format!("Cannot divide operands: {:?} / {:?}", left, right))
+        _ => {
+            env.dump();
+            panic!(format!("Cannot divide operands: {:?} / {:?}", left, right))
+        }
     }
 }
 
@@ -168,7 +180,10 @@ fn modulus(left: AST, right: AST, env: &Environment) -> AST {
     let right = lookup_or_self(&right, env);
     match (&left, &right) {
         (AST::Number(l), AST::Number(r)) => AST::Number(l % r),
-        _ => panic!(format!("Cannot modulus operands: {:?} % {:?}", left, right))
+        _ => {
+            env.dump();
+            panic!(format!("Cannot modulus operands: {:?} % {:?}", left, right))
+        }
     }
 }
 
@@ -179,6 +194,7 @@ fn or(left: AST, right: AST, env: &Environment) -> AST {
                 AST::Boolean(b || b2)
             }
             else {
+                env.dump();
                 panic!(format!("Cannot OR operands: {:?} || {:?}", left, right));
             }
         }
@@ -187,6 +203,7 @@ fn or(left: AST, right: AST, env: &Environment) -> AST {
         }
     }
     else {
+        env.dump();
         panic!(format!("Cannot OR operands: {:?} || {:?}", left, right));
     }
 }
@@ -198,6 +215,7 @@ fn and(left: AST, right: AST, env: &Environment) -> AST {
                 AST::Boolean(b || b2)
             }
             else {
+                env.dump();
                 panic!(format!("Cannot AND operands: {:?} && {:?}", left, right));
             }
         }
@@ -206,6 +224,7 @@ fn and(left: AST, right: AST, env: &Environment) -> AST {
         }
     }
     else {
+        env.dump();
         panic!(format!("Cannot AND operands: {:?} && {:?}", left, right));
     }
 }
@@ -221,7 +240,10 @@ fn less_than(left: AST, right: AST, env: &Environment) -> AST {
     let right = lookup_or_self(&right, env);
     match (&left, &right) {
         (AST::Number(l), AST::Number(r)) => AST::Boolean(l < r),
-        _ => panic!(format!("Cannot compare operands: {:?} < {:?}", left, right))
+        _ => {
+            env.dump();
+            panic!(format!("Cannot compare operands: {:?} < {:?}", left, right))
+        }
     }
 }
 
@@ -230,7 +252,10 @@ fn less_than_or_equals(left: AST, right: AST, env: &Environment) -> AST {
     let right = lookup_or_self(&right, env);
     match (&left, &right) {
         (AST::Number(l), AST::Number(r)) => AST::Boolean(l <= r),
-        _ => panic!(format!("Cannot compare operands: {:?} <= {:?}", left, right))
+        _ => {
+            env.dump();
+            panic!(format!("Cannot compare operands: {:?} <= {:?}", left, right))
+        }
     }
 }
 
@@ -239,7 +264,10 @@ fn greater_than(left: AST, right: AST, env: &Environment) -> AST {
     let right = lookup_or_self(&right, env);
     match (&left, &right) {
         (AST::Number(l), AST::Number(r)) => AST::Boolean(l > r),
-        _ => panic!(format!("Cannot compare operands: {:?} > {:?}", left, right))
+        _ => {
+            env.dump();
+            panic!(format!("Cannot compare operands: {:?} > {:?}", left, right))
+        }
     }
 }
 
@@ -248,6 +276,9 @@ fn greater_than_or_equals(left: AST, right: AST, env: &Environment) -> AST {
     let right = lookup_or_self(&right, env);
     match (&left, &right) {
         (AST::Number(l), AST::Number(r)) => AST::Boolean(l >= r),
-        _ => panic!(format!("Cannot compare operands: {:?} >= {:?}", left, right))
+        _ => {
+            env.dump();
+            panic!(format!("Cannot compare operands: {:?} >= {:?}", left, right))
+        }
     }
 }

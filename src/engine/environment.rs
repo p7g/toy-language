@@ -16,7 +16,7 @@ impl<'a> Environment<'a> {
     }
 
     pub fn dump(&self) {
-        println!("{:?}", self.bindings);
+        println!("{:#?}", self.bindings);
         if let Some(parent) = self.parent_environment {
             parent.dump();
         }
