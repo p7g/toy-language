@@ -34,17 +34,25 @@ print_range(1, 5);
 
     let mut env = Environment::new(None);
 
+    let func = |args: Vec<AST>| {
+        let mut string = "".to_string();
+        for i in args.iter() {
+            let s = match i {
+                AST::String_(lit) => lit.clone(),
+                AST::Number(num) => format!("{}", num),
+                AST::Boolean(b) => if *b { "true" } else { "false" }.to_string(),
+                x => format!("{:?}", x)
+            };
+            string.push_str(&s);
+        }
+        print!("{}", string);
+        AST::Boolean(true)
+    };
+
     env.def(&"print".to_string(), AST::Function {
         parameters: vec!("string".to_string()),
-        body: Box::new(AST::Program(vec!(AST::Boolean(true)))),
-        native: Some(Box::new(|args: Vec<AST>| {
-            let mut string = "".to_string();
-            for i in args.iter() {
-                string.push_str(&format!("{:?}", i));
-            }
-            print!("{}", string);
-            AST::Boolean(true)
-        }))
+        body: Box::new(AST::Boolean(true)),
+        native: Some(Box::new(func))
     });
 
     env.def(&"println".to_string(), AST::Function {
@@ -53,7 +61,7 @@ print_range(1, 5);
             Parser::new(
                 TokenStream::new(
                     InputStream::new(
-                        &"print(string);print(\"\\\n\")".to_string()
+                        &"print(string);print(\"\\\n\");".to_string()
                     )
                 )
             ).parse()
