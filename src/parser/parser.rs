@@ -15,7 +15,20 @@ impl PartialEq for Box<Fn(Vec<AST>) -> AST> {
 
 impl Clone for Box<Fn(Vec<AST>) -> AST> {
     fn clone(&self) -> Box<Fn(Vec<AST>) -> AST> {
-        Box::new(|a| AST::Program(a))
+        Box::new(|args: Vec<AST>| {
+            let mut string = "".to_string();
+            for i in args.iter() {
+                let s = match i {
+                    AST::String_(lit) => lit.clone(),
+                    AST::Number(num) => format!("{}", num),
+                    AST::Boolean(b) => if *b { "true" } else { "false" }.to_string(),
+                    x => format!("{:?}", x)
+                };
+                string.push_str(&s);
+            }
+            print!("{}", string);
+            AST::Boolean(true)
+        })
     }
 }
 
