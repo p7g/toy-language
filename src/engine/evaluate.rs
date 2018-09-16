@@ -96,16 +96,16 @@ pub fn evaluate(ast: AST, env: &mut Environment) -> Option<AST> {
             if let Some(left) = evaluate(*left, &mut Environment::new(Some(env))) {
                 if let Some(right) = evaluate(*right, &mut Environment::new(Some(env))) {
                     match operator.as_ref() {
-                        "+" => Some(add(left, right, &env)),
-                        "-" => Some(subtract(left, right, &env)),
-                        "*" => Some(multiply(left, right, &env)),
-                        "/" => Some(divide(left, right, &env)),
-                        "%" => Some(modulus(left, right, &env)),
+                        "+"  => Some(add(left, right, &env)),
+                        "-"  => Some(subtract(left, right, &env)),
+                        "*"  => Some(multiply(left, right, &env)),
+                        "/"  => Some(divide(left, right, &env)),
+                        "%"  => Some(modulus(left, right, &env)),
                         "||" => Some(or(left, right, &env)),
                         "&&" => Some(and(left, right, &env)),
                         "==" => Some(equals(left, right, &env)),
-                        "<" => Some(less_than(left, right, &env)),
-                        ">" => Some(greater_than(left,right, &env)),
+                        "<"  => Some(less_than(left, right, &env)),
+                        ">"  => Some(greater_than(left,right, &env)),
                         "<=" => Some(less_than_or_equals(left, right, &env)),
                         ">=" => Some(greater_than_or_equals(left, right, &env)),
                         _ => {
