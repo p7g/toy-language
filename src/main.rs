@@ -84,5 +84,5 @@ print_range(1, 5);
         native: None
     });
 
-    evaluate(parser.parse(), env);
+    evaluate(parser.parse(), &mut env);
 }

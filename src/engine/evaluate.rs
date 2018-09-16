@@ -1,6 +1,6 @@
 use super::{ AST, Environment };
 
-pub fn evaluate(ast: AST, mut env: Environment) -> Option<AST> {
+pub fn evaluate(ast: AST, env: &mut Environment) -> Option<AST> {
     match ast {
         AST::Number(_) | AST::String_(_) | AST::Boolean(_) => Some(ast),
         AST::Variable(name) => Some(env.get(&name)),
@@ -12,7 +12,7 @@ pub fn evaluate(ast: AST, mut env: Environment) -> Option<AST> {
         },
         AST::Assign { left, right, .. } => {
             if let AST::Variable(name) = (*left).clone() {
-                if let Some(result) = evaluate(*right.clone(), Environment::new(Some(&env))) {
+                if let Some(result) = evaluate(*right.clone(), &mut Environment::new(Some(env))) {
                     env.def(&name, result);
                 }
                 None
@@ -44,7 +44,7 @@ pub fn evaluate(ast: AST, mut env: Environment) -> Option<AST> {
                                 };
                                 fnenv.def(name, value);
                             }
-                            evaluate((*body).clone(), fnenv)
+                            evaluate((*body).clone(), &mut fnenv)
                         }
                     }
                     else {
@@ -62,14 +62,14 @@ pub fn evaluate(ast: AST, mut env: Environment) -> Option<AST> {
             }
         },
         AST::If { condition, then, otherwise } => {
-            let cond = evaluate(*condition, Environment::new(Some(&env)));
+            let cond = evaluate(*condition, &mut Environment::new(Some(env)));
             match cond {
                 Some(AST::Boolean(b)) => {
                     if b {
-                        evaluate(*then, Environment::new(Some(&env)))
+                        evaluate(*then, &mut Environment::new(Some(env)))
                     }
                     else if let Some(exp) = otherwise {
-                        evaluate(*exp, Environment::new(Some(&env)))
+                        evaluate(*exp, &mut Environment::new(Some(env)))
                     }
                     else {
                         Some(AST::Boolean(false))
@@ -82,8 +82,8 @@ pub fn evaluate(ast: AST, mut env: Environment) -> Option<AST> {
             }
         },
         AST::Binary { operator, left, right } => {
-            if let Some(left) = evaluate(*left, Environment::new(Some(&env))) {
-                if let Some(right) = evaluate(*right, Environment::new(Some(&env))) {
+            if let Some(left) = evaluate(*left, &mut Environment::new(Some(env))) {
+                if let Some(right) = evaluate(*right, &mut Environment::new(Some(env))) {
                     match operator.as_ref() {
                         "+" => Some(add(left, right, &env)),
                         "-" => Some(subtract(left, right, &env)),
