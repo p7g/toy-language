@@ -22,7 +22,7 @@ impl<'a> Environment<'a> {
         }
     }
 
-    fn has(&self, binding: &String) -> bool {
+    fn _has(&self, binding: &String) -> bool {
         self.bindings.contains_key(binding)
     }
 
