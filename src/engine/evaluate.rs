@@ -2,7 +2,8 @@ use super::{ AST, Environment };
 
 pub fn evaluate(ast: AST, mut env: Environment) -> Option<AST> {
     match ast {
-        AST::Number(_) | AST::String_(_) | AST::Boolean(_) | AST::Variable(_) => Some(ast),
+        AST::Number(_) | AST::String_(_) | AST::Boolean(_) => Some(ast),
+        AST::Variable(name) => Some(env.get(&name)),
         AST::Program(exprs) => {
             for expr in exprs.iter() {
                 evaluate(expr.clone(), Environment::new(Some(&env)));
