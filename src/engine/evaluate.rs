@@ -6,7 +6,7 @@ pub fn evaluate(ast: AST, mut env: Environment) -> Option<AST> {
         AST::Variable(name) => Some(env.get(&name)),
         AST::Program(exprs) => {
             for expr in exprs.iter() {
-                evaluate(expr.clone(), Environment::new(Some(&env)));
+                evaluate(expr.clone(), env);
             }
             None
         },
