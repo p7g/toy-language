@@ -26,18 +26,29 @@ pub fn evaluate(ast: AST, env: &mut Environment) -> Option<AST> {
             Some(func)
         },
         AST::Call { function, arguments } => {
-            let mut fnenv = Environment::new(Some(&env));
             if let AST::Variable(name) = *function.clone() {
                 if let function @ AST::Function { .. } = env.get(&name) {
                     if let AST::Function { parameters, body, native } = function {
                         if let Some(f) = native {
-                            Some(f(arguments))
+                            let mut args: Vec<AST> = Vec::new();
+                            for arg in arguments.iter() {
+                                if let Some(result) = evaluate(arg.clone(), env) {
+                                    args.push(result);
+                                }
+                            }
+                            Some(f(args))
                         }
                         else {
+                            let mut fnenv = Environment::new(Some(&env));
                             for i in 0..parameters.len() {
                                 let name = &parameters[i];
                                 let value = if let Some(value) = arguments.get(i) {
-                                    value.clone()
+                                    if let Some(v) = evaluate(value.clone(), &mut Environment::new(Some(env))) {
+                                        v
+                                    }
+                                    else {
+                                        AST::Boolean(false)
+                                    }
                                 }
                                 else {
                                     AST::Boolean(false)
