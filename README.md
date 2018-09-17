@@ -5,9 +5,11 @@ simple programming language (that currently doesn't really work) adapted from [t
 
 ## TODO
 
-* Make it work (currently, it seems like variables aren't being defined properly)
-* Add error messages that actually help (I just threw a bunch of `panic!()`s in there because I'm lazy, but now I'm suffering)
-* Clean up (the code is a mess... way too much repetition)
+- ~~Make it work (currently, it seems like variables aren't being defined properly)~~
+- Add error messages that actually help (I just threw a bunch of `panic!()`s in there because I'm lazy, but now I'm suffering)
+- Clean up (the code is a mess... way too much repetition)
+- Replace the horrible hack in `parser.rs` (the Clone impl for `Fn(Vec<AST>) -> AST`)
+  - without fixing this, any sort of standard lib will be impossible... only `print()`
 
 ## Syntax
 
